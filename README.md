@@ -1,2 +1,23 @@
-# AHS-Botball-2019
-2019 Botball: Carbot code
+void moveForward();
+void moveBackward();
+void turnRight();
+void turnLeft();
+int main(){
+  //wait_for_light();
+  shut_down_in(118);
+  enable_servos();
+  
+  //action code
+  
+  disable_servos();
+  ao();
+  return 0;
+}
+void moveForward(){
+}
+void moveBackward(){
+}
+void turnRight(){
+}
+void turnLeft(){
+}
