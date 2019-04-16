@@ -1,31 +1,67 @@
-void moveForward();\
-void moveBackward();\
-void turnRight();\
-void turnLeft();\
-int main(){\
-  //wait_for_light();\
-  shut_down_in(118);\
-  enable_servos();\
+int main()
+{
+//remember: roomba is backwards (all drive codes = backwards)
+  int bucket = 3;
+  //int reel = 3; (used in other functions; here for reference)
+  //int bar = 2; (used in other functions; here for reference)
+  int lineFollow = 0; //sensor
+  int stop = 1; //sensor
+  //int burning = 2;
+  //wait_for_light(#)
+  shut_down_in(118);
+  create_connect();
+  enable_servos();
+  set_servo_position(bucket, 500);
   
-  disable_servos();\
-  ao();\
-  return 0;\
-}\
-void moveForward(){
-mav (0, 1000);
-mav (1, 1000);
-}\
-void moveBackward(){
-mav (0, -800);
-mav (1, -800);
-}\
-void turnRight(){
-  mav(0, -500);
-  mav(1, 500);
-  msleep(2000);
-}\
-void turnLeft(){
-  mav(0, 500);
-  mav(1, -500);
-  msleep(2000);
+  create_drive_direct(100, 100);//move out of box
+    msleep(5500);
+  create_drive_direct (200, -200);//turn 90
+  	msleep (900);
+  create_drive_direct(-200, -200);//move beyond box line
+  	msleep (1000);
+  while (analog(lineFollow) < 2000){ //move until hit gray line
+create_drive_direct(-200, -200);
+  }
+    create_drive_direct(30, 30);//move off tape
+    	msleep(800);
+    
+    adjust(); //tries to put both on line
+	create_drive_direct(10, 10);
+		msleep (1000);
+	while (analog(0)<1700 && analog(stop)<1700){ //checks if both are level
+     	create_drive_direct(-10, -10);
+		}
+	if (analog(0)>800 && analog(1)>800){
+     create_drive_direct(0, 0);
+	}
+	else {
+	adjust();
+		}
+    
+    create_drive_direct(-80, -80);//moves into blue area
+    	msleep(4000);
+    create_drive_direct(-50, 50);
+    	msleep(2200);
+  	create_drive_direct(-50, -50);
+    	msleep(4000);
+    create_drive_direct(0,0);
+    	msleep(1000);
+
+lineFollowStop();//line follow until horizontal blue
+
+    create_drive_direct(60, 60);//moves away to set up arm
+    	msleep(4000);
+    create_stop();
+    
+    readyCzechs();
+    
+  	create_drive_direct(-60,-60);//move to people
+    	msleep(4000);
+    create_drive_direct(0,0);
+    defenestrate();
+  create_disconnect();
+  disable_servos();
+  ao();
+    return 0;
 }
+
