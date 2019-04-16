@@ -1,3 +1,4 @@
+void adjust();
 int main()
 {
 //remember: roomba is backwards (all drive codes = backwards)
@@ -63,5 +64,25 @@ lineFollowStop();//line follow until horizontal blue
   disable_servos();
   ao();
     return 0;
+}
+void adjust(){
+while (analog(0) < 1900){
+     create_drive_direct(-10, -10);
+}
+while (analog(1) < 1600){
+     create_drive_direct(-20, -10);
+}
+}
+void lineFollowStop(){
+    while (analog(0) < 1950){
+        if (analog(1) < 1600){
+            create_drive_direct(-50, -10);
+            	msleep(700);
+        }
+        else {
+            create_drive_direct(-10, -50);
+            	msleep(700);
+        }
+    }
 }
 
